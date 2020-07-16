@@ -17,7 +17,7 @@
 typedef struct
 {
 	char * name;
-	Template_Result (*function)(T_Obj *obj, ...);
+	Template_StatusCode (*function)(T_Obj *obj, ...);
 	bool isAsync;
 	int dataSize;
 	int respSize;
@@ -25,10 +25,10 @@ typedef struct
 
 TestCase TestMap[] =
 {
-		{"T_Command1Async" , (Template_Result (*)(T_Obj *, ...))T_Command1Async, true,  sizeof(st_cmd1), 0},
-		{"T_Event1"        , (Template_Result (*)(T_Obj *, ...))T_Event1       , true,  sizeof(st_cmd1), 0},
-		{"T_Command1"      , (Template_Result (*)(T_Obj *, ...))T_Command1     , false, sizeof(st_cmd1), sizeof(st_cmd1)},
-		{"T_Command2"      , (Template_Result (*)(T_Obj *, ...))T_Command2     , false, sizeof(st_cmd2), sizeof(st_cmd2)},
+		{"T_Command1Async" , (Template_StatusCode (*)(T_Obj *, ...))T_Command1Async, true,  sizeof(st_cmd1), 0},
+		{"T_Event1"        , (Template_StatusCode (*)(T_Obj *, ...))T_Event1       , true,  sizeof(st_cmd1), 0},
+		{"T_Command1"      , (Template_StatusCode (*)(T_Obj *, ...))T_Command1     , false, sizeof(st_cmd1), sizeof(st_cmd1)},
+		{"T_Command2"      , (Template_StatusCode (*)(T_Obj *, ...))T_Command2     , false, sizeof(st_cmd2), sizeof(st_cmd2)},
 };
 
 TestCase * GetTestCase(char * name)
@@ -48,7 +48,7 @@ typedef struct
 	T_Obj obj;
 	bool running;
 	uint8_t payload[1024];
-	Template_Result status;
+	Template_StatusCode status;
 	uint32_t size;
 	uint32_t timeout;
 }ClassTest;
