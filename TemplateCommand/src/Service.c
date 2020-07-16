@@ -117,9 +117,9 @@ bool T_Run (T_Obj *obj)
 	return true;
 }
 
-static Template_Result T_SendGeneric(T_Obj *obj, bool sync, uint32_t type, uint32_t id, uint32_t statusCode, void * payload, uint32_t size, void * resp, uint32_t *respSize )
+static Template_StatusCode T_SendGeneric(T_Obj *obj, bool sync, uint32_t type, uint32_t id, uint32_t statusCode, void * payload, uint32_t size, void * resp, uint32_t *respSize )
 {
-	Template_Result result = T_ParameterError;
+	Template_StatusCode result = T_ParameterError;
 	T_Context * ctx = obj->handle;
 
 	uint32_t frameSize = size + T_FRAME_HEADER_SIZE;
@@ -146,7 +146,7 @@ static Template_Result T_SendGeneric(T_Obj *obj, bool sync, uint32_t type, uint3
 				TP_Process(ctx->tp);
 				if(!ctx->waitingResponse && ctx->frame && ctx->frame->type == T_FrameResponse && ctx->frame->id == id)
 				{
-					result = (Template_Result)ctx->frame->statusCode;
+					result = (Template_StatusCode)ctx->frame->statusCode;
 
 					if(resp && (*respSize >= ctx->payloadSize))
 					{
@@ -165,40 +165,40 @@ static Template_Result T_SendGeneric(T_Obj *obj, bool sync, uint32_t type, uint3
 	return result;
 }
 
-Template_Result T_Command1(T_Obj *obj, st_cmd1* data, st_cmd1* out)
+Template_StatusCode T_Command1(T_Obj *obj, st_cmd1* data, st_cmd1* out)
 {
 	uint32_t size = (out==NULL)?0:sizeof(st_cmd1);
 	return T_SendGeneric(obj, true, T_FrameCommand, T_Cmd1, T_OK, data, (data==NULL)?0:sizeof(st_cmd1), out, &size);
 }
 
-Template_Result T_Command1Async(T_Obj *obj, st_cmd1* data)
+Template_StatusCode T_Command1Async(T_Obj *obj, st_cmd1* data)
 {
 	return T_SendGeneric(obj, false, T_FrameCommand, T_Cmd1, T_OK, data, (data==NULL)?0:sizeof(st_cmd1), NULL, 0);
 }
 
 
-Template_Result T_Command2(T_Obj *obj, st_cmd2 *cmd)
+Template_StatusCode T_Command2(T_Obj *obj, st_cmd2 *cmd)
 {
 	uint32_t size = sizeof(st_cmd2);
 	return T_SendGeneric(obj, true, T_FrameCommand, T_Cmd2, T_OK, NULL, 0, cmd, &size);
 }
 
-Template_Result T_Response1(T_Obj *obj, Template_Result statusCode, st_cmd1* data)
+Template_StatusCode T_Response1(T_Obj *obj, Template_StatusCode statusCode, st_cmd1* data)
 {
 	return T_SendGeneric(obj, false, T_FrameResponse, T_Cmd1, statusCode, data, (data==NULL)?0:sizeof(st_cmd1), NULL, 0);
 }
 
-Template_Result T_Response2(T_Obj *obj, Template_Result statusCode, st_cmd2* data)
+Template_StatusCode T_Response2(T_Obj *obj, Template_StatusCode statusCode, st_cmd2* data)
 {
 	return T_SendGeneric(obj, false, T_FrameResponse, T_Cmd2, statusCode, data, (data==NULL)?0:sizeof(st_cmd2), NULL, 0);
 }
 
-Template_Result T_Event1(T_Obj *obj, st_cmd1* data)
+Template_StatusCode T_Event1(T_Obj *obj, st_cmd1* data)
 {
 	return T_SendGeneric(obj, false, T_FrameEvent, T_Evt1, T_OK, data, (data==NULL)?0:sizeof(st_cmd1), NULL, 0);
 }
 
-Template_Result T_Event2(T_Obj *obj, st_cmd2* data)
+Template_StatusCode T_Event2(T_Obj *obj, st_cmd2* data)
 {
 	return T_SendGeneric(obj, false, T_FrameEvent, T_Evt2, T_OK, data, (data==NULL)?0:sizeof(st_cmd2), NULL, 0);
 }

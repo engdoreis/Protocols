@@ -93,7 +93,7 @@ typedef enum __SHORT_ENUM__
 	 * @addtogroup Events
 	 * @ingroup PacketID
 	 * @{
-	 * @par 0xE1 - Event
+	 * @par 0xE1 - Event 2
 	 * @copybrief T_Event2
 	 * * Command payload
 	 *   @copydoc st_cmd2

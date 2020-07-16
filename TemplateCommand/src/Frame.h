@@ -42,8 +42,8 @@
  * @par Packet Type
  * | Type          | Value | Description                                                |
  * |:--:           |:--:   |:--                                                         |
- * |**COMMAND**    |0      |The master will send a COMMAND the slayer requesting actions or informations. Any command will generate a RESPONSE back.|
- * |**RESPONSE**   |1      |The slayer will reply a COMMAND with a RESPONSE.                                                                        |
+ * |**COMMAND**    |0      |The master will send a COMMAND the slave requesting actions or informations. Any command will generate a response using RESPONSE packet.|
+ * |**RESPONSE**   |1      |The slave will reply a COMMAND with a RESPONSE.                                                                        |
  * |**EVENT**      |2      |A EVENT can be send by master or slave and does not generate another Packet.                                            |
  *
  * @}
@@ -55,9 +55,9 @@
  */
 typedef enum __SHORT_ENUM__
 {
-	T_FrameCommand  = 0,  /*!< The master of the communication will send COMMANDs the slayer requesting actions or informations.*/
-	T_FrameResponse = 1,  /*!< The slayer of the communication will reply to master COMMANDs with RESPONSE.                       */
-	T_FrameEvent    = 2,  /*!< The slayer of the communication can send EVENTs to the master.                                     */
+	T_FrameCommand  = 0,  /*!< The master of the communication will send COMMANDs the slave requesting actions or informations.*/
+	T_FrameResponse = 1,  /*!< The slave of the communication will reply to master COMMANDs with RESPONSE.                       */
+	T_FrameEvent    = 2,  /*!< The slave of the communication can send EVENTs to the master.                                     */
 	T_FrameCount
 }T_PacketType;
 
@@ -66,7 +66,7 @@ typedef struct
 {
 	T_PacketType type;
 	T_FrameID id;
-	Template_Result statusCode;
+	Template_StatusCode statusCode;
 	union
 	{
 		uint8_t raw[65535];

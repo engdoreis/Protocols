@@ -25,78 +25,78 @@
  * 
  * @par Server example
  * @code{.cpp}
-void Command(void *param, uint8_t address, T_Frame *data)
-{	
-	switch(data->id)
-	{
-	case T_Cmd1:
-	{
-		st_cmd1 cmd1;
-		cmd1.field1 = data->payload.cmd1.field1 + 1;
-		cmd1.field2 = data->payload.cmd1.field2 + 2;
-		T_Response1(param, T_OK, &cmd1);
-	}break;
-	case T_Cmd2:
-	{
-		T_Response2(param, T_NotSupportedError, NULL);
-	}break;
-	default:
-		break;
-	}
-}
-
-void Event(void *param, uint8_t address, T_Frame *data)
-{
-	//Do something
-}
-
-int main (int argc, char** argv)
-{
-	uint8_t buffer[512];
-	int timeout;
-	T_Obj obj;
-	
-	bool ret = T_Init(&obj, "COM3", &driver, buffer, sizeof(buffer));
-	if (!ret)
-		goto exit;
-
-	ret = T_RegisterCommandCallback(&obj, Command, &obj);
-	ret = T_RegisterEventCallback(&obj, Event, &obj);
-
-	timeout = SYS_Tick() + TIMEOUT;
-	while(timeout > SYS_Tick())
-	{
-		ret = T_Run(&obj);
-	}
-
-	exit:
-	return 0;
-}
+ * void Command(void *param, uint8_t address, T_Frame *data)
+ * {	
+ * 	switch(data->id)
+ * 	{
+ * 	case T_Cmd1:
+ * 	{
+ * 		st_cmd1 cmd1;
+ * 		cmd1.field1 = data->payload.cmd1.field1 + 1;
+ * 		cmd1.field2 = data->payload.cmd1.field2 + 2;
+ * 		T_Response1(param, T_OK, &cmd1);
+ * 	}break;
+ * 	case T_Cmd2:
+ * 	{
+ * 		T_Response2(param, T_NotSupportedError, NULL);
+ * 	}break;
+ * 	default:
+ * 		break;
+ * 	}
+ * }
+ * 
+ * void Event(void *param, uint8_t address, T_Frame *data)
+ * {
+ * 	//Do something
+ * }
+ * 
+ * int main (int argc, char** argv)
+ * {
+ * 	uint8_t buffer[512];
+ * 	int timeout;
+ * 	T_Obj obj;
+ * 	
+ * 	bool ret = T_Init(&obj, "COM3", &driver, buffer, sizeof(buffer));
+ * 	if (!ret)
+ * 		goto exit;
+ * 
+ * 	ret = T_RegisterCommandCallback(&obj, Command, &obj);
+ * 	ret = T_RegisterEventCallback(&obj, Event, &obj);
+ * 
+ * 	timeout = SYS_Tick() + TIMEOUT;
+ * 	while(timeout > SYS_Tick())
+ * 	{
+ * 		ret = T_Run(&obj);
+ * 	}
+ * 
+ * 	exit:
+ * 	return 0;
+ * }
  * @endcode
  * 
  * @par Client example
  * @code{.cpp}
-  *
-int main (int argc, char** argv)
-{
-	uint8_t buffer[512];
-	int timeout;
-	T_Obj obj;
-	st_cmd1 in, out
-	
-	bool ret = T_Init(&obj, "COM3", &driver, buffer, sizeof(buffer));
-	if (!ret)
-		goto exit;
-	
-	in.field1 = 0;
-	in.field2 = 20;
-	T_Command1(&test.obj, &in, &out)
-
-	printf("%d %d", out.field1, out.field2)
-
-	exit:
-	return 0;
-}
+ *
+ * int main (int argc, char** argv)
+ * {
+ * 	uint8_t buffer[512];
+ * 	int timeout;
+ * 	T_Obj obj;
+ * 	st_cmd1 in, out
+ * 	
+ * 	bool ret = T_Init(&obj, "COM3", &driver, buffer, sizeof(buffer));
+ * 	if (!ret)
+ * 		goto exit;
+ * 	
+ * 	in.field1 = 0;
+ * 	in.field2 = 20;
+ * 	T_Command1(&test.obj, &in, &out)
+ * 
+ * 	printf("%d %d", out.field1, out.field2)
+ * 
+ * 	exit:
+ * 	return 0;
+ * }
  * @endcode
  */
 
@@ -202,7 +202,7 @@ typedef struct
  *
  * @param[out] obj Pointer to the object which will be initialized.
  * 
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
 bool T_Init(T_Obj *obj, const void *port, T_Driver *driver, uint8_t * buffer, uint32_t size);
 
@@ -251,7 +251,7 @@ bool T_RegisterResponseCallback(T_Obj *obj, T_Callback callback, void *arg);
  * 
  * @param[in] obj   Pointer to the object initialized in ::T_Init function.
  * 
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
 bool T_Run (T_Obj *obj);
 
@@ -269,9 +269,9 @@ bool T_Run (T_Obj *obj);
  * @param[in]   data  Pointer to the struct to send the data.
  * @param[out]  out   Pointer to the struct to receive the data.
  *    
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
-Template_Result T_Command1(T_Obj *obj, st_cmd1* data, st_cmd1* out);
+Template_StatusCode T_Command1(T_Obj *obj, st_cmd1* data, st_cmd1* out);
 
 /*!
  * @brief Used to send the cmd1.
@@ -280,21 +280,21 @@ Template_Result T_Command1(T_Obj *obj, st_cmd1* data, st_cmd1* out);
  * arrives. The response will arrive via the callback registered with the function ::T_RegisterResponseCallback
  *
  * @param[in]     obj   Pointer to the object initialized in ::T_Init function.
- * @param[in/out] data  Pointer to the struct to receive the data.
+ * @param[in,out] data  Pointer to the struct to receive the data.
  *
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
-Template_Result T_Command1Async(T_Obj *obj, st_cmd1* data);
+Template_StatusCode T_Command1Async(T_Obj *obj, st_cmd1* data);
 
 /*!
  * @brief Used to send the cmd2.
  * 
  * @param[in]     obj   Pointer to the object initialized in ::T_Init function.
- * @param[in/out] data  Pointer to the struct with the data.
+ * @param[in,out] data  Pointer to the struct with the data.
  *
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
-Template_Result T_Command2(T_Obj *obj, st_cmd2* data);
+Template_StatusCode T_Command2(T_Obj *obj, st_cmd2* data);
 
 
 /*!@}*/
@@ -311,9 +311,9 @@ Template_Result T_Command2(T_Obj *obj, st_cmd2* data);
  * @param[in]  obj   Pointer to the object initialized in ::T_Init function.
  * @param[in]  data  Pointer to the struct to receive the data.
  *
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
-Template_Result T_Response1(T_Obj *obj, Template_Result statusCode, st_cmd1* data);
+Template_StatusCode T_Response1(T_Obj *obj, Template_StatusCode statusCode, st_cmd1* data);
 
 /*!
  * @brief Used to send a response to the cmd2.
@@ -321,9 +321,9 @@ Template_Result T_Response1(T_Obj *obj, Template_Result statusCode, st_cmd1* dat
  * @param[in]  obj   Pointer to the object initialized in ::T_Init function.
  * @param[in]  data  Pointer to the struct to receive the data.
  *
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
-Template_Result T_Response2(T_Obj *obj, Template_Result statusCode, st_cmd2* data);
+Template_StatusCode T_Response2(T_Obj *obj, Template_StatusCode statusCode, st_cmd2* data);
 
 
 /*!@}*/
@@ -339,9 +339,9 @@ Template_Result T_Response2(T_Obj *obj, Template_Result statusCode, st_cmd2* dat
  * @param[in]  obj   Pointer to the object initialized in ::T_Init function.
  * @param[in]  data  Pointer to the struct with the data.
  *
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
-Template_Result T_Event1(T_Obj *obj, st_cmd1* data);
+Template_StatusCode T_Event1(T_Obj *obj, st_cmd1* data);
 
 /*!
  * @brief Used to warn.
@@ -349,9 +349,9 @@ Template_Result T_Event1(T_Obj *obj, st_cmd1* data);
  * @param[in]  obj   Pointer to the object initialized in ::T_Init function.
  * @param[in]  data  Pointer to the struct with the data.
  *
- * @return ::Template_Result
+ * @return ::Template_StatusCode
  */
-Template_Result T_Event2(T_Obj *obj, st_cmd2* data);
+Template_StatusCode T_Event2(T_Obj *obj, st_cmd2* data);
 
 /*! @}*/
 
