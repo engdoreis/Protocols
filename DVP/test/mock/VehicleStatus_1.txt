@@ -1,0 +1,7 @@
+WheelLock=1
+poweredOn=0
+headLightOn=0
+tailLightOn=0
+buzzerOn=0
+cruiseOn=0
+speed=0
