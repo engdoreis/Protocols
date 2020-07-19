@@ -32,8 +32,8 @@
 									<listOptionValue builtIn="false" value="&quot;D:\Github\Middleware\VCP\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;D:\Github\Middleware\MP\src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Kuickwheel/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Ninebot}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Ninebot/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Protocol}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Protocol/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TransportProtocol/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TemplateCommand/src}&quot;"/>
 								</option>
@@ -42,8 +42,8 @@
 							<tool id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.1655839330" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.847717256" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Kuickwheel/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Ninebot}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Ninebot/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Protocol}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/Protocol/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TransportProtocol/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/TemplateCommand/src}&quot;"/>
 								</option>

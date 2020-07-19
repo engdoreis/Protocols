@@ -11,8 +11,8 @@
  *
  */
 
-#ifndef T_NinebotH_
-#define T_NinebotH_
+#ifndef T_ProtocolH_
+#define T_ProtocolH_
 
 #include <stdint.h>
 #include <stdbool.h>

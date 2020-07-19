@@ -1,5 +1,5 @@
 /*
- * Ninebot_types.h
+ * Protocol_types.h
  *
  *  Created on: Sep 25, 2019
  *      Eng. Douglas Reis
