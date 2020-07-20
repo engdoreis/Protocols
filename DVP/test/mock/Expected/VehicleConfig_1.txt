@@ -1,0 +1,6 @@
+Ret=0
+ cruiseEnabled=1
+ throttleLevel=7
+ brakeLevel=4
+ startSpeed=5
+ speedLimit=3500

@@ -1,0 +1,8 @@
+Ret=0
+ WheelLock=0
+ poweredOn=1
+ headLightOn=1
+ tailLightOn=1
+ buzzerOn=0
+ cruiseOn=0
+ speed=3315
