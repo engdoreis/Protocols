@@ -69,7 +69,7 @@ typedef struct
 	DVP_StatusCode statusCode;
 	union
 	{
-		uint8_t raw[65535];
+		uint8_t raw[1024];
 		DVP_VehicleStatus vehicleStatus;
 		DVP_VehicleConfig vehicleConfig;
 		DVP_Info vehicleInfo;

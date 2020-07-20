@@ -26,8 +26,8 @@ typedef struct
 	bool isAsync;
 	bool isReadable;
 	int dataSize;
-	char * printFormat;
-	char * scanFormat;
+	char * outputFormat;
+	char * inputFormat;
 }TestCase;
 
 TestCase TestMap[] =
@@ -221,8 +221,8 @@ int main (int argc, char** argv)
 		FILE *fp = fopen(argv[2], "rb");
 		if(fp)
 		{
-			VA_ArgsScanfConverter(tc->scanFormat, testBuffer, array.param, sizeof(array.param) / sizeof(array.param[0]));
-			fscanf(fp, tc->scanFormat, array);
+			VA_ArgsScanfConverter(tc->inputFormat, testBuffer, array.param, sizeof(array.param) / sizeof(array.param[0]));
+			fscanf(fp, tc->inputFormat, array);
 
 			fclose(fp);
 
@@ -237,6 +237,7 @@ int main (int argc, char** argv)
 		{
 			test.status = tc->function(&test.obj, testBuffer);
 			test.running = true;
+			test.status = DVP_TimeoutError;
 			while(test.running)
 			{
 				DVP_Run(&test.obj);
@@ -257,8 +258,8 @@ int main (int argc, char** argv)
 		fp = fopen(argv[3], "w");
 		if(fp)
 		{
-			VA_ArgsPrintfConverter(tc->printFormat, test.status, testBuffer, array.param, sizeof(array.param) / sizeof(array.param[0]));
-			fprintf(fp, tc->printFormat, array);
+			VA_ArgsPrintfConverter(tc->outputFormat, test.status, testBuffer, array.param, sizeof(array.param) / sizeof(array.param[0]));
+			fprintf(fp, tc->outputFormat, array);
 			fclose(fp);
 		}
 	}

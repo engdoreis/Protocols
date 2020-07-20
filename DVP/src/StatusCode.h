@@ -20,12 +20,13 @@
  *  |Name                     |Value |
  *  |:--                      |:--:  |
  *  |OK                       | 0x00 |
- *  |Not Available Error      | 0x01 |
- *  |Timeout Error            | 0x02 |
- *  |Protocol Error           | 0x03 |
- *  |Not Open Error           | 0x04 |
- *  |Parameter Error          | 0x05 |
- *  |Not Supported Error      | 0xFE |
+ *  |Timeout Error            | 0x01 |
+ *  |Protocol Error           | 0x02 |
+ *  |Not Open Error           | 0x03 |
+ *  |Parameter Error          | 0x04 |
+ *  |Unauthenticated Error    | 0x05 |
+ *  |CRC error                | 0x06 |
+ *  |Not Supported Error      | 0x07 |
  *  |General Error            | 0xFF |
  * 
  */
@@ -36,12 +37,13 @@
 typedef enum __SHORT_ENUM__
 {
 	DVP_OK                       = 0x00,
-	DVP_NotAvailableError        = 0x01,
-	DVP_TimeoutError             = 0x02,
-	DVP_ProtocolError            = 0x03,
-	DVP_NotOpenError             = 0x04,
-	DVP_ParameterError           = 0x05,
-	DVP_NotSupportedError        = 0xFE,
+	DVP_TimeoutError             = 0x01,
+	DVP_ProtocolError            = 0x02,
+	DVP_NotOpenError             = 0x03,
+	DVP_ParameterError           = 0x04,
+	DVP_Unauthenticated          = 0x05,
+	DVP_CRCError                 = 0x06,
+	DVP_NotSupportedError        = 0x07,
 	DVP_GeneralError             = 0xFF
 }DVP_StatusCode;
 

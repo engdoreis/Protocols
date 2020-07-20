@@ -76,14 +76,14 @@ typedef struct
  * |:--:        |:--:            |:--:      |:--                                                                                           |
  * |1           |Is Charging     |Read      |True the battery is charging, False the battery is discharging.                               |
  * |1           |Charge          |Read      |Indicates the battery charge from 0% to 100%.                                                 |
- * |1           |Temperature     |Read      |Indicates the battery temperature offset from -20°C. Ex. 45 means 25°C.                      |
+ * |1           |Temperature     |Read      |Indicates the battery temperature offset from -20ï¿½C. Ex. 45 means 25ï¿½C.                      |
  * |2           |Voltage         |Read      |Indicates the battery voltage. The value must be divided by 100. Ex. 2515 => 25,15V           |
  */
 typedef struct
 {
 	bool isCharging;           /*!<True the battery is charging, False the battery is discharging */	
 	uint8_t charge;            /*!<Indicates the battery charge from 0% to 100%.*/
-	uint8_t temperature;       /*!<Indicates the battery temperature offset from -20°C. Ex.  45 means 25°C.*/
+	uint8_t temperature;       /*!<Indicates the battery temperature offset from -20ï¿½C. Ex.  45 means 25ï¿½C.*/
 	uint16_t voltage;          /*!<Indicates the battery voltage. The value must be divided by 100. Ex. 2515 => 25,15V */	
 } DVP_BatteryStatus;
 
@@ -286,6 +286,22 @@ typedef enum __SHORT_ENUM__
 	 * @}
 	 */
 	DVP_eFirmwareUpdateFinish = 0xCC,
+
+	/*!
+	 * @addtogroup Commands Command/Response ID list
+	 * @ingroup PacketID
+	 * @{
+	 * @par 0xA0 - Start authentication
+	 * @copybrief DVP_StartAuthentication
+	 * * Command payload
+	 *   > None
+	 * * Response payload
+	 *   @copydoc DVP_VehicleStatus
+	 *
+	 * * Status code See @ref StatusCode
+	 * @}
+	 */
+	DVP_eStartAuthentication = 0xA0,
 
 	/*--------------------------Events-----------------------------------*/
 	/*!

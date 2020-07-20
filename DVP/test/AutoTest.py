@@ -29,14 +29,14 @@ class AutoTest:
         subprocess.call ([self.binName, test.cmd, test.input , test.output], stdout=subprocess.DEVNULL)
         
         if not os.path.exists(test.expected):
-            print(test.expected , " Not found")
-        elif os.path.exists(test.output):
+            print("\n", test.expected , " Not found")
+        elif not os.path.exists(test.output):
+            print("\n", test.output , " Not found")
+        else:
             if filecmp.cmp(test.expected, test.output, shallow=False):
                 print ("Aproved!!!")
                 return True
             print ("Failed!!\nComparisson between {} and {} Unmatched".format(test.output, test.expected))
-        else:
-            print(test.output , " Not found")
             
         print("Failed to run: {} {} {} {}".format(self.binName, test.cmd , test.input, test.output))
         return False

@@ -136,6 +136,7 @@ DVP_StatusCode DVP_SendGeneric(DVP_Obj *obj, bool sync, uint32_t type, uint32_t 
 			goto exit;
 		}
 
+		result = DVP_OK;
 		if(sync)
 		{
 			uint32_t tries = 5;
