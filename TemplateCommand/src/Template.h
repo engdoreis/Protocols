@@ -267,35 +267,34 @@ bool T_Run (T_Obj *obj);
  * 
  * @param[in]   obj   Pointer to the object initialized in ::T_Init function.
  * @param[in]   data  Pointer to the struct to send the data.
- * @param[out]  out   Pointer to the struct to receive the data.
  *    
  * @return ::Template_StatusCode
  */
-Template_StatusCode T_Command1(T_Obj *obj, st_cmd1* data, st_cmd1* out);
+Template_StatusCode T_Command1(T_Obj *obj, st_cmd1* data);
 
 /*!
- * @brief Used to send the cmd1.
- *
- * @details Does the same as ::T_Command1 however this functions doesn't block until the response
- * arrives. The response will arrive via the callback registered with the function ::T_RegisterResponseCallback
- *
- * @param[in]     obj   Pointer to the object initialized in ::T_Init function.
- * @param[in,out] data  Pointer to the struct to receive the data.
- *
- * @return ::Template_StatusCode
+ * @copydoc T_Command1
+ * @attention This functions doesn't block until the response arrives. The response will arrive via the callback registered
+ * with the function ::T_RegisterResponseCallback
  */
 Template_StatusCode T_Command1Async(T_Obj *obj, st_cmd1* data);
 
 /*!
  * @brief Used to send the cmd2.
  * 
- * @param[in]     obj   Pointer to the object initialized in ::T_Init function.
- * @param[in,out] data  Pointer to the struct with the data.
+ * @param[in]    obj   Pointer to the object initialized in ::T_Init function.
+ * @param[out]   data  Pointer to the struct with the data.
  *
  * @return ::Template_StatusCode
  */
 Template_StatusCode T_Command2(T_Obj *obj, st_cmd2* data);
 
+/*!
+ * @copydoc T_Command1
+ * @attention This functions doesn't block until the response arrives. The response will arrive via the callback registered
+ * with the function ::T_RegisterResponseCallback
+ */
+Template_StatusCode T_Command2Async(T_Obj *obj);
 
 /*!@}*/
 
@@ -313,7 +312,7 @@ Template_StatusCode T_Command2(T_Obj *obj, st_cmd2* data);
  *
  * @return ::Template_StatusCode
  */
-Template_StatusCode T_Response1(T_Obj *obj, Template_StatusCode statusCode, st_cmd1* data);
+Template_StatusCode T_Response1(T_Obj *obj, Template_StatusCode statusCode);
 
 /*!
  * @brief Used to send a response to the cmd2.

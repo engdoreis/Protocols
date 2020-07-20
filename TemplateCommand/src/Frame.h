@@ -69,7 +69,7 @@ typedef struct
 	Template_StatusCode statusCode;
 	union
 	{
-		uint8_t raw[65535];
+		uint8_t raw[1024];
 		st_cmd1 cmd1;
 		st_cmd2 cmd2;
 	}payload;

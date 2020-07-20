@@ -9,7 +9,7 @@
 #include "Porting.h"
 #include <stdio.h>
 
-#define TIMEOUT 2000
+#define TIMEOUT 1000
 
 typedef struct
 {
@@ -19,6 +19,14 @@ typedef struct
 	uint32_t size;
 	uint32_t timeout;
 }ClassServerTest;
+
+st_cmd1 cmd1 = {
+		.field1 = 55, .field2 = 27,
+};
+
+st_cmd2 cmd2 = {
+		.field1 = 155, .field2 = 127, .field3 = 35645,
+};
 
 T_Driver driver =
 {
@@ -33,25 +41,22 @@ T_Driver driver =
 
 void Command(void *param, uint8_t address, T_Frame *data)
 {
-	ClassServerTest *test = (ClassServerTest*) param;
-
-	test->timeout = SYS_Tick() + TIMEOUT;
+	ClassServerTest *test = (ClassServerTest *) param;
 	switch(data->id)
 	{
 	case T_Cmd1:
 	{
-		st_cmd1 cmd1;
-		cmd1.field1 = data->payload.cmd1.field1 + 1;
-		cmd1.field2 = data->payload.cmd1.field2 + 2;
-		T_Response1(&test->obj, T_OK, &cmd1);
+		T_Response1(&test->obj, T_OK);
 	}break;
 	case T_Cmd2:
 	{
-		T_Response2(&test->obj, T_NotSupportedError, NULL);
+		T_Response2(&test->obj, T_OK, &cmd2);
 	}break;
+
 	default:
 		break;
 	}
+	test->timeout = SYS_Tick() + TIMEOUT;
 }
 
 void Event(void *param, uint8_t address, T_Frame *data)
@@ -63,12 +68,9 @@ void Event(void *param, uint8_t address, T_Frame *data)
 	{
 	case T_Evt1:
 	{
-		st_cmd2 evt;
-		evt.field1 = data->payload.cmd1.field1 + 1;
-		evt.field2 = data->payload.cmd1.field2 + 2;
-		evt.field3 = ((data->payload.cmd1.field2 - 1) << 8) | ((data->payload.cmd1.field2 - 2) << 0);
-		T_Event2(&test->obj, &evt);
-	}break;
+		T_Event2(&test->obj, &cmd2);
+	}
+	break;
 	default:
 		break;
 	}
@@ -77,7 +79,7 @@ void Event(void *param, uint8_t address, T_Frame *data)
 int main (int argc, char** argv)
 {
 
-	uint8_t buffer[512];
+	uint8_t buffer[1024];
 	ClassServerTest test =
 	{
 			.running = true,
@@ -87,7 +89,7 @@ int main (int argc, char** argv)
 	//Disable stdout buffer to flush immediately
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-	bool ret = T_Init(&test.obj, "server:1003", &driver, buffer, sizeof(buffer));
+	bool ret = T_Init(&test.obj, "server:1001", &driver, buffer, sizeof(buffer));
 	if (!ret)
 		goto exit;
 

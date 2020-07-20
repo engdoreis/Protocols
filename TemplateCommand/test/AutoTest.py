@@ -10,24 +10,33 @@ import os
 import sys
 
 class AutoTest:
-    def __init__(self, binName):
+    def __init__(self, binName, inDir, outDir, expectDir):
         self.binName = binName
+        self.inDir = inDir
+        self.outDir = outDir
+        self.expectDir = expectDir
+        
         self.index=0
 
     def Execute(self, test):
         self.index += 1
         print ("\n------------------------------------------------------------------------------------")
-        print("Starting test case {}: {}".format(self.index, test.name))                
+        print("Starting test case {}: {}......".format(self.index, test.name), end= "")
+        test.input = self.inDir + test.input 
+        test.output = self.outDir + test.output
+        test.expected = self.expectDir + test.expected
         
         subprocess.call ([self.binName, test.cmd, test.input , test.output], stdout=subprocess.DEVNULL)
-        #subprocess.call ([self.binName, test.cmd, test.input , test.expected])
-
-
-        if os.path.exists(test.output):
+        
+        if not os.path.exists(test.expected):
+            print("\n", test.expected , " Not found")
+        elif not os.path.exists(test.output):
+            print("\n", test.output , " Not found")
+        else:
             if filecmp.cmp(test.expected, test.output, shallow=False):
-                print ("Passed!!")
+                print ("Aproved!!!")
                 return True
-            print ("Comparisson between {} and {} failed".format(test.output, test.expected))
+            print ("Failed!!\nComparisson between {} and {} Unmatched".format(test.output, test.expected))
             
         print("Failed to run: {} {} {} {}".format(self.binName, test.cmd , test.input, test.output))
         return False
@@ -48,18 +57,27 @@ print ("------------------------------------------------------------------------
 print ("Starting Server ...              ")
 subprocess.Popen([str(sys.argv[1])], stdout=subprocess.DEVNULL)
 
-at = AutoTest(str(sys.argv[2]))
+at = AutoTest(str(sys.argv[2]), inDir="test/mock/", outDir="~build/x86/debug/", expectDir="test/mock/expected/")
 
 testList = []
 
-testList.append(UnitTest(name="Command Response Test "      , cmd="T_Command1"     , input="test/mock/test1.txt", output="~build/x86/debug/test1.txt", expected="test/mock/expected/test1.txt"))
-testList.append(UnitTest(name="Command Response Async Test ", cmd="T_Command1Async", input="test/mock/test1.txt", output="~build/x86/debug/test1.txt", expected="test/mock/expected/test1.txt"))
-testList.append(UnitTest(name="Event Test "                 , cmd="T_Event1"       , input="test/mock/test2.txt", output="~build/x86/debug/test2.txt", expected="test/mock/expected/test2.txt"))
-testList.append(UnitTest(name="Status code OK Test "        , cmd="T_Command2"     , input="test/mock/test3.txt", output="~build/x86/debug/test3.txt", expected="test/mock/expected/test3.txt"))
-
-
+testList.append(UnitTest(name="Command Response Test "            , cmd="T_Command1"              , input="cmd1.txt",     output="test1.txt",     expected="Ret_OK.txt"))
+testList.append(UnitTest(name="Command Response Async Test "      , cmd="T_Command1Async"         , input="cmd1.txt",     output="test2.txt",     expected="Ret_OK.txt"))
+testList.append(UnitTest(name="Command Response 2 Test "          , cmd="T_Command2"              , input="n",            output="test3.txt",     expected="cmd2.txt"))
+testList.append(UnitTest(name="Event Test "                       , cmd="T_Event1"                , input="cmd1.txt",     output="test4.txt",     expected="cmd2.txt"))
+                                                                                                                                                                                              
+approved = True
 for test in testList:
+    sys.stdout.flush()
     if at.Execute(test) == False:
-    	break
+        approved = False
+        break
+
+sys.stdout.flush()
+
+if(not approved):
+    os._exit(1)
         
 print ("\n------------------------------------------------------------------------------------")    
+
+
