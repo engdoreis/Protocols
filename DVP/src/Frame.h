@@ -78,6 +78,8 @@ typedef struct
 		DVP_FirmwareUpdateStartPacket fwUpdateStart;
 		DVP_FirmwareUpdateLoadPacket fwUpdateLoad;
 		DVP_FirmwareUpdateFinishPacket fwUpdateFinish;
+		DVP_AuthenticationData authenticate;
+		DVP_AuthenticationData updatePublicKey;
 	}payload;
 } DVP_Frame;
 #pragma pack(pop)

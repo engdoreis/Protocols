@@ -197,6 +197,56 @@ DVP_StatusCode DVP_FirmwareUpdateFinish(DVP_Obj *obj, DVP_FirmwareUpdateFinishPa
  */
 DVP_StatusCode DVP_FirmwareUpdateFinishAsync(DVP_Obj *obj, DVP_FirmwareUpdateLoadPacket* data);
 
+/*!
+ * @brief Start the authentication process, the response will be the session key encrypted by the RSA public key will be returned.
+ *
+ * @param[in]   obj   Pointer to the object initialized in ::DVP_Init function.
+ * @param[out]  data  Pointer to the struct containing the encrypted session key received.
+ *
+ * @return ::DVP_StatusCode
+ */
+DVP_StatusCode DVP_StartAuthentication(DVP_Obj *obj, DVP_AuthenticationData* data);
+
+/**
+ * @copydoc DVP_StartAuthentication
+ * @attention This functions doesn't block until the response arrives. The response will arrive via the callback registered
+ * with the function ::DVP_RegisterResponseCallback
+ */
+DVP_StatusCode DVP_StartAuthenticationAsync(DVP_Obj *obj);
+
+/*!
+ * @brief Send the signature of the data received by ::DVP_StartAuthentication command.
+ *
+ * @param[in]   obj   Pointer to the object initialized in ::DVP_Init function.
+ * @param[in]   data  Pointer to the struct containing the signature.
+ *
+ * @return ::DVP_StatusCode
+ */
+DVP_StatusCode DVP_Authenticate(DVP_Obj *obj, DVP_AuthenticationData* data);
+
+/**
+ * @copydoc DVP_Authenticate
+ * @attention This functions doesn't block until the response arrives. The response will arrive via the callback registered
+ * with the function ::DVP_RegisterResponseCallback
+ */
+DVP_StatusCode DVP_AuthenticateAsync(DVP_Obj *obj, DVP_AuthenticationData* data);
+
+/*!
+ * @brief Send the new public key encrypted by the session key received by ::DVP_StartAuthentication command.
+ *
+ * @param[in]   obj   Pointer to the object initialized in ::DVP_Init function.
+ * @param[in]   data  Pointer to the struct containing the CSR with the public key.
+ *
+ * @return ::DVP_StatusCode
+ */
+DVP_StatusCode DVP_UpdatePublicKey(DVP_Obj *obj, DVP_AuthenticationData* data);
+
+/**
+ * @copydoc DVP_UpdatePublicKey
+ * @attention This functions doesn't block until the response arrives. The response will arrive via the callback registered
+ * with the function ::DVP_RegisterResponseCallback
+ */
+DVP_StatusCode DVP_UpdatePublicKeyAsync(DVP_Obj *obj, DVP_AuthenticationData* data);
 /*!@}*/
 
 #endif

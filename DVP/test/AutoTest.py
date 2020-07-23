@@ -57,7 +57,7 @@ print ("------------------------------------------------------------------------
 print ("Starting Server ...              ")
 subprocess.Popen([str(sys.argv[1])], stdout=subprocess.DEVNULL)
 
-at = AutoTest(str(sys.argv[2]), inDir="test/mock/", outDir="~build/x86/debug/", expectDir="test/mock/expected/")
+at = AutoTest(str(sys.argv[2]), inDir="test/mock/", outDir="~build/x86/", expectDir="test/mock/expected/")
 
 testList = []
 
@@ -70,9 +70,12 @@ testList.append(UnitTest(name="Read Vehicle Info"                 , cmd="DVP_Rea
 testList.append(UnitTest(name="Read Battery Status"               , cmd="DVP_ReadBatteryStatus"            , input="n"                          , output="test7.txt",          expected="BatteryStatus_1.txt"))
 testList.append(UnitTest(name="Read Battery Info"                 , cmd="DVP_ReadBatteryInfo"              , input="n"                          , output="test8.txt",          expected="BatteryInfo_1.txt"))
 testList.append(UnitTest(name="Start Firmware Update"             , cmd="DVP_FirmwareUpdateStart"          , input="FUS_1.txt"                  , output="test9.txt",          expected="Ret_OK.txt"))
-testList.append(UnitTest(name="Send Firmware Packet"              , cmd="DVP_FirmwareUpdateLoad"           , input="FUL_1.txt"                  , output="test10.txt",          expected="Ret_OK.txt"))
-testList.append(UnitTest(name="Finish Firmware Update"            , cmd="DVP_FirmwareUpdateFinish"         , input="FUF_1.txt"                  , output="test10.txt",          expected="Ret_OK.txt"))
-                                                                                                                                                                                              
+testList.append(UnitTest(name="Send Firmware Packet"              , cmd="DVP_FirmwareUpdateLoad"           , input="FUL_1.txt"                  , output="test10.txt",         expected="Ret_OK.txt"))
+testList.append(UnitTest(name="Start Authentication"              , cmd="DVP_StartAuthentication"          , input=" "                          , output="test11.txt",         expected="AuthData.txt"))
+testList.append(UnitTest(name="Authenticate"                      , cmd="DVP_Authenticate"                 , input="AuthData.txt"               , output="test12.txt",         expected="Ret_OK.txt"))
+testList.append(UnitTest(name="UpdatePublicKey"                   , cmd="DVP_UpdatePublicKey"              , input="CSR.txt"                    , output="test13.txt",         expected="Ret_OK.txt"))
+
+
 approved = True
 for test in testList:
     sys.stdout.flush()

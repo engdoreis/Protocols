@@ -42,6 +42,12 @@ DVP_Info batInfo = {
 		.serialnumber = {0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14}
 };
 
+DVP_AuthenticationData auth =
+{
+		.size = 32,
+		.AuthData = {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10}
+};
+
 DVP_Driver driver =
 {
 		.Open = UART_Open,
@@ -102,6 +108,23 @@ void Command(void *param, uint8_t address, DVP_Frame *data)
 	case DVP_eFirmwareUpdateFinish:
 	{
 		DVP_ReplyFirmwareUpdateFinish(&test->obj, DVP_OK);
+	}break;
+	case DVP_eStartAuthentication:
+	{
+		DVP_StatusCode status = DVP_OK;
+		DVP_ReplyStartAuthentication(&test->obj, status, &auth);
+	}break;
+	case DVP_eAuthenticate:
+	{
+		DVP_StatusCode status = DVP_OK;
+		status = (data->payload.authenticate.size == 32) ? status : DVP_ProtocolError;
+		DVP_ReplyAuthenticate(&test->obj, status);
+	}break;
+	case DVP_eUpdatePublicKey:
+	{
+		DVP_StatusCode status = DVP_OK;
+		status = (data->payload.updatePublicKey.size == 64) ? status : DVP_ProtocolError;
+		DVP_ReplyUpdatePublickey(&test->obj, status);
 	}break;
 	default:
 		break;

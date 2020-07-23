@@ -114,13 +114,13 @@ DVP_StatusCode DVP_FirmwareUpdateStartAsync(DVP_Obj *obj, DVP_FirmwareUpdateStar
 
 DVP_StatusCode DVP_FirmwareUpdateLoad(DVP_Obj *obj, DVP_FirmwareUpdateLoadPacket* data)
 {
-	uint32_t size = sizeof(DVP_FirmwareUpdateLoadPacket);
+	uint32_t size = sizeof(data->sequence) + sizeof(data->size) + data->size;
 	return DVP_SendGeneric(obj, true, DVP_FrameCommand, DVP_eFirmwareUpdateLoad, DVP_OK, data, size, NULL, 0);
 }
 
 DVP_StatusCode DVP_FirmwareUpdateLoadAsync(DVP_Obj *obj, DVP_FirmwareUpdateLoadPacket* data)
 {
-	uint32_t size = sizeof(DVP_FirmwareUpdateLoadPacket);
+	uint32_t size = sizeof(data->sequence) + sizeof(data->size) + data->size;
 	return DVP_SendGeneric(obj, false, DVP_FrameCommand, DVP_eFirmwareUpdateLoad, DVP_OK, data, size, NULL, 0);
 }
 
@@ -134,4 +134,39 @@ DVP_StatusCode DVP_FirmwareUpdateFinishAsync(DVP_Obj *obj, DVP_FirmwareUpdateLoa
 {
 	uint32_t size = sizeof(DVP_FirmwareUpdateFinishPacket);
 	return DVP_SendGeneric(obj, false, DVP_FrameCommand, DVP_eFirmwareUpdateFinish, DVP_OK, data, size, NULL, 0);
+}
+
+DVP_StatusCode DVP_StartAuthentication(DVP_Obj *obj, DVP_AuthenticationData* data)
+{
+	uint32_t size = sizeof(DVP_AuthenticationData);
+	return DVP_SendGeneric(obj, true, DVP_FrameCommand, DVP_eStartAuthentication, DVP_OK, NULL, 0, data, &size);
+}
+
+DVP_StatusCode DVP_StartAuthenticationAsync(DVP_Obj *obj)
+{
+	return DVP_SendGeneric(obj, false, DVP_FrameCommand, DVP_eStartAuthentication, DVP_OK, NULL, 0, NULL, 0);
+}
+
+DVP_StatusCode DVP_Authenticate(DVP_Obj *obj, DVP_AuthenticationData* data)
+{
+	uint32_t size = sizeof(data->size) + data->size;
+	return DVP_SendGeneric(obj, true, DVP_FrameCommand, DVP_eAuthenticate, DVP_OK, data, size, NULL, 0);
+}
+
+DVP_StatusCode DVP_AuthenticateAsync(DVP_Obj *obj, DVP_AuthenticationData* data)
+{
+	uint32_t size = sizeof(data->size) + data->size;
+	return DVP_SendGeneric(obj, false, DVP_FrameCommand, DVP_eAuthenticate, DVP_OK, data, size, NULL, 0);
+}
+
+DVP_StatusCode DVP_UpdatePublicKey(DVP_Obj *obj, DVP_AuthenticationData* data)
+{
+	uint32_t size = sizeof(data->size) + data->size;
+	return DVP_SendGeneric(obj, true, DVP_FrameCommand, DVP_eUpdatePublicKey, DVP_OK, data, size, NULL, 0);
+}
+
+DVP_StatusCode DVP_UpdatePublicKeyAsync(DVP_Obj *obj, DVP_AuthenticationData* data)
+{
+	uint32_t size = sizeof(data->size) + data->size;
+	return DVP_SendGeneric(obj, false, DVP_FrameCommand, DVP_eUpdatePublicKey, DVP_OK, data, size, NULL, 0);
 }

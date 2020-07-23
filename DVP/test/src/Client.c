@@ -32,16 +32,19 @@ typedef struct
 
 TestCase TestMap[] =
 {
-	{"DVP_ReadVehicleStatus"     ,(Function)DVP_ReadVehicleStatus       ,false ,true ,sizeof(DVP_VehicleStatus)             ,"Ret=%u\n WheelLock=%hhx\n poweredOn=%hhx\n headLightOn=%hhx\n tailLightOn=%hhx\n buzzerOn=%hhx\n cruiseOn=%hhx\n speed=%hu", " "},
-	{"DVP_WriteVehicleStatus"    ,(Function)DVP_WriteVehicleStatus      ,false ,true ,sizeof(DVP_VehicleStatus)             ,"Ret=%u", "WheelLock=%hhx\n poweredOn=%hhx\n headLightOn=%hhx\n tailLightOn=%hhx\n buzzerOn=%hhx\n cruiseOn=%hhx\n speed=%hu"},
-	{"DVP_ReadVehicleConfig"     ,(Function)DVP_ReadVehicleConfig       ,false ,true ,sizeof(DVP_VehicleConfig)             ,"Ret=%u\n cruiseEnabled=%hhx\n throttleLevel=%hhx\n brakeLevel=%hhx\n startSpeed=%hu\n speedLimit=%hu\n", " "},
-	{"DVP_WriteVehicleConfig"    ,(Function)DVP_WriteVehicleConfig      ,false ,true ,sizeof(DVP_VehicleConfig)             ,"Ret=%u", "cruiseEnabled=%hhx\n throttleLevel=%hhx\n brakeLevel=%hhx\n startSpeed=%hu\n speedLimit=%hu\n"},
-	{"DVP_ReadVehicleInfo"       ,(Function)DVP_ReadVehicleInfo         ,false ,true ,sizeof(DVP_Info)                      ,"Ret=%u\n serialnumber=%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X\n firmwareVersion=%hhX.%hhX.%hhX.%hhX\n", " "},
-	{"DVP_ReadBatteryStatus"     ,(Function)DVP_ReadBatteryStatus       ,false ,true ,sizeof(DVP_BatteryStatus)             ,"Ret=%u\n isCharging=%hhx\n charge=%hhu%%\n temperature=%hhu°c\n voltage=%huV\n", " "},
-	{"DVP_ReadBatteryInfo"       ,(Function)DVP_ReadBatteryInfo         ,false ,true ,sizeof(DVP_Info)                      ,"Ret=%u\n serialnumber=%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X\n firmwareVersion=%hhX.%hhX.%hhX.%hhX\n", " "},
-	{"DVP_FirmwareUpdateStart"   ,(Function)DVP_FirmwareUpdateStart     ,false ,true ,sizeof(DVP_FirmwareUpdateStartPacket) ,"Ret=%u", "firmwareSize=%u\n"},
-	{"DVP_FirmwareUpdateLoad"    ,(Function)DVP_FirmwareUpdateLoad      ,false ,true ,sizeof(DVP_FirmwareUpdateLoadPacket)  ,"Ret=%u", "sequence=%hu\n size=%hu\n content=%s\n"},
-	{"DVP_FirmwareUpdateFinish"  ,(Function)DVP_FirmwareUpdateFinish    ,false ,true ,sizeof(DVP_FirmwareUpdateFinishPacket),"Ret=%u", "crc=%04X\n version=%hhX.%hhX.%hhX.%hhX\n"},
+	{"DVP_ReadVehicleStatus"     ,(Function)DVP_ReadVehicleStatus       ,false ,true ,sizeof(DVP_VehicleStatus)             ,"Ret=%u\r\n WheelLock=%hhx\r\n poweredOn=%hhx\r\n headLightOn=%hhx\r\n tailLightOn=%hhx\r\n buzzerOn=%hhx\r\n cruiseOn=%hhx\r\n speed=%hu", " "},
+	{"DVP_WriteVehicleStatus"    ,(Function)DVP_WriteVehicleStatus      ,false ,true ,sizeof(DVP_VehicleStatus)             ,"Ret=%u", "WheelLock=%hhx\r\n poweredOn=%hhx\r\n headLightOn=%hhx\r\n tailLightOn=%hhx\r\n buzzerOn=%hhx\r\n cruiseOn=%hhx\r\n speed=%hu"},
+	{"DVP_ReadVehicleConfig"     ,(Function)DVP_ReadVehicleConfig       ,false ,true ,sizeof(DVP_VehicleConfig)             ,"Ret=%u\r\n cruiseEnabled=%hhx\r\n throttleLevel=%hhx\r\n brakeLevel=%hhx\r\n startSpeed=%hu\r\n speedLimit=%hu\r\n", " "},
+	{"DVP_WriteVehicleConfig"    ,(Function)DVP_WriteVehicleConfig      ,false ,true ,sizeof(DVP_VehicleConfig)             ,"Ret=%u", "cruiseEnabled=%hhx\r\n throttleLevel=%hhx\r\n brakeLevel=%hhx\r\n startSpeed=%hu\r\n speedLimit=%hu\r\n"},
+	{"DVP_ReadVehicleInfo"       ,(Function)DVP_ReadVehicleInfo         ,false ,true ,sizeof(DVP_Info)                      ,"Ret=%u\r\n serialnumber=%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X\r\n firmwareVersion=%hhX.%hhX.%hhX.%hhX\r\n", " "},
+	{"DVP_ReadBatteryStatus"     ,(Function)DVP_ReadBatteryStatus       ,false ,true ,sizeof(DVP_BatteryStatus)             ,"Ret=%u\r\n isCharging=%hhx\r\n charge=%hhu%%\r\n temperature=%hhu°c\r\n voltage=%huV\r\n", " "},
+	{"DVP_ReadBatteryInfo"       ,(Function)DVP_ReadBatteryInfo         ,false ,true ,sizeof(DVP_Info)                      ,"Ret=%u\r\n serialnumber=%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X\r\n firmwareVersion=%hhX.%hhX.%hhX.%hhX\r\n", " "},
+	{"DVP_FirmwareUpdateStart"   ,(Function)DVP_FirmwareUpdateStart     ,false ,true ,sizeof(DVP_FirmwareUpdateStartPacket) ,"Ret=%u", "firmwareSize=%u\r\n"},
+	{"DVP_FirmwareUpdateLoad"    ,(Function)DVP_FirmwareUpdateLoad      ,false ,true ,sizeof(DVP_FirmwareUpdateLoadPacket)  ,"Ret=%u", "sequence=%hu\r\n size=%hu\r\n content=%s\r\n"},
+	{"DVP_FirmwareUpdateFinish"  ,(Function)DVP_FirmwareUpdateFinish    ,false ,true ,sizeof(DVP_FirmwareUpdateFinishPacket),"Ret=%u", "crc=%04X\r\n version=%hhX.%hhX.%hhX.%hhX\r\n"},
+	{"DVP_StartAuthentication"   ,(Function)DVP_StartAuthentication     ,false ,true ,sizeof(DVP_AuthenticationData)        ,"size=%hhu\r\n AuthData=%X %X %X %X %X %X %X %X\r\n", "Ret=%u"},
+	{"DVP_Authenticate"          ,(Function)DVP_Authenticate            ,false ,true ,sizeof(DVP_AuthenticationData)        ,"Ret=%u", "size=%hhu\r\n AuthData=%X %X %X %X %X %X %X %X\r\n"},
+	{"DVP_UpdatePublicKey"       ,(Function)DVP_UpdatePublicKey         ,false ,true ,sizeof(DVP_AuthenticationData)        ,"Ret=%u", "size=%hhu\r\n AuthData=%X %X %X %X %X %X %X %X\r\n"},
 
 };
 
@@ -209,15 +212,15 @@ int main (int argc, char** argv)
 		ret = DVP_RegisterEventCallback(&test.obj, Event, &test);
 
 
-		printf("Test: %s\n ", argv[1]);
+		printf("Test: %s\r\n ", argv[1]);
 		tc = GetTestCase(argv[1]);
 		if(tc == NULL)
 		{
-			printf("Test %s not found\n ", argv[1]);
+			printf("Test %s not found\r\n ", argv[1]);
 			return 2;
 		}
 
-		printf("\n Opening: %s\n ", argv[2]);
+		printf("\r\n Opening: %s\r\n ", argv[2]);
 		FILE *fp = fopen(argv[2], "rb");
 		if(fp)
 		{
@@ -228,11 +231,11 @@ int main (int argc, char** argv)
 
 			if(size < tc->dataSize)
 			{
-				printf("Wrong data size\n ");
+				printf("Wrong data size\r\n ");
 			}
 		}
 
-		printf("Sending\n ");
+		printf("Sending\r\n ");
 		if(tc->isAsync)
 		{
 			test.status = tc->function(&test.obj, testBuffer);
@@ -243,7 +246,7 @@ int main (int argc, char** argv)
 				DVP_Run(&test.obj);
 				if(	test.timeout < SYS_Tick())
 				{
-					printf("Timeout\n ");
+					printf("Timeout\r\n ");
 					return 2;
 				}
 			}
@@ -254,7 +257,7 @@ int main (int argc, char** argv)
 			test.status = tc->function(&test.obj, testBuffer);
 		}
 
-		printf("\n Opening: %s\n ", argv[3]);
+		printf("\r\n Opening: %s\r\n ", argv[3]);
 		fp = fopen(argv[3], "w");
 		if(fp)
 		{

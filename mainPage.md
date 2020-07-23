@@ -12,6 +12,7 @@ There are two ways of implementing this protocol.
 |Date             |Author             |Details                                                                             |
 |:--              |:--                |:--                                                                                 |
 |2020-Jul-18      |Douglas Reis       |First release                                                                       |
+|2020-Jul-23      |Douglas Reis       |Add authentication commands.                                                        |
 
 # Using the API
  The fastest and easiest solution it's to use the API. It implents all the rules and assure the packet integrity.

@@ -132,6 +132,36 @@ DVP_StatusCode DVP_ReplyFirmwareUpdateLoad(DVP_Obj *obj, DVP_StatusCode statusCo
  */
 DVP_StatusCode DVP_ReplyFirmwareUpdateFinish(DVP_Obj *obj, DVP_StatusCode statusCode);
 
+/*!
+ * @brief Respond the Start Authentication command.
+ *
+ * @param[in]  obj        Pointer to the object initialized in ::DVP_Init function.
+ * @param[in]  statusCode Status for the operation. See:: ::DVP_StatusCode for the available values
+ * @param[in]  data       Pointer to the struct containing the data to be replayed.
+ *
+ * @return ::DVP_StatusCode
+ */
+DVP_StatusCode DVP_ReplyStartAuthentication(DVP_Obj *obj, DVP_StatusCode statusCode, DVP_AuthenticationData* data);
+
+/*!
+ * @brief Respond the Authenticate command.
+ *
+ * @param[in]  obj        Pointer to the object initialized in ::DVP_Init function.
+ * @param[in]  statusCode Status for the operation. See:: ::DVP_StatusCode for the available values
+ *
+ * @return ::DVP_StatusCode
+ */
+DVP_StatusCode DVP_ReplyAuthenticate(DVP_Obj *obj, DVP_StatusCode statusCode);
+
+/*!
+ * @brief Respond the Update public key command.
+ *
+ * @param[in]  obj        Pointer to the object initialized in ::DVP_Init function.
+ * @param[in]  statusCode Status for the operation. See:: ::DVP_StatusCode for the available values
+ *
+ * @return ::DVP_StatusCode
+ */
+DVP_StatusCode DVP_ReplyUpdatePublickey(DVP_Obj *obj, DVP_StatusCode statusCode);
 /*!@}*/
 
 #endif

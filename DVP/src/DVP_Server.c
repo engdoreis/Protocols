@@ -75,3 +75,18 @@ DVP_StatusCode DVP_ReplyFirmwareUpdateFinish(DVP_Obj *obj, DVP_StatusCode status
 	return DVP_SendGeneric(obj, false, DVP_FrameResponse, DVP_eFirmwareUpdateFinish, statusCode, NULL, 0, NULL, 0);
 }
 
+DVP_StatusCode DVP_ReplyStartAuthentication(DVP_Obj *obj, DVP_StatusCode statusCode, DVP_AuthenticationData* data)
+{
+	uint32_t size = (data == NULL) ? 0 : sizeof(data->size) + data->size;
+	return DVP_SendGeneric(obj, false, DVP_FrameResponse, DVP_eStartAuthentication, statusCode, data, size, NULL, 0);
+}
+
+DVP_StatusCode DVP_ReplyAuthenticate(DVP_Obj *obj, DVP_StatusCode statusCode)
+{
+	return DVP_SendGeneric(obj, false, DVP_FrameResponse, DVP_eAuthenticate, statusCode, NULL, 0, NULL, 0);
+}
+
+DVP_StatusCode DVP_ReplyUpdatePublickey(DVP_Obj *obj, DVP_StatusCode statusCode)
+{
+	return DVP_SendGeneric(obj, false, DVP_FrameResponse, DVP_eUpdatePublicKey, statusCode, NULL, 0, NULL, 0);
+}

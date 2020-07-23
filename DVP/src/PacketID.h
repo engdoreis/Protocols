@@ -122,6 +122,19 @@ typedef struct
 	uint8_t crc[4];       /*!<Indicates the CRC32 IEEE for the whole binary transfered.*/
 	uint8_t version[4];   /*!<Indicates the transfered firmware version. Four bytes long left aligned.Ex. 0x01025600 => 01.02.56.00.*/
 }DVP_FirmwareUpdateFinishPacket;
+
+/*!
+ * |Size     |Name       |Read/Write|Description                                                       |
+ * |:--:     |:--:       |:--:      |:--                                                               |
+ * |1        |size       |Read/Write|Indicates the size in bytes of the packet content.                |
+ * |var      |AuthData   |Read/Write|Carries the authentication Data.                                  |
+ */
+typedef struct
+{
+	uint8_t size;            /*!<Indicates the size in bytes of the packet content.*/
+	uint8_t AuthData[256];   /*!<Carries the authentication Data.*/
+}DVP_AuthenticationData;
+
 #pragma pack(pop)
 
 
@@ -296,12 +309,44 @@ typedef enum __SHORT_ENUM__
 	 * * Command payload
 	 *   > None
 	 * * Response payload
-	 *   @copydoc DVP_VehicleStatus
+	 *   @copydoc DVP_AuthenticationData
 	 *
 	 * * Status code See @ref StatusCode
 	 * @}
 	 */
 	DVP_eStartAuthentication = 0xA0,
+
+	/*!
+	 * @addtogroup Commands Command/Response ID list
+	 * @ingroup PacketID
+	 * @{
+	 * @par 0xA1 - Authenticate
+	 * @copybrief DVP_Authenticate
+	 * * Command payload
+	 *   @copydoc DVP_AuthenticationData
+	 * * Response payload
+	 *   > None
+	 *
+	 * * Status code See @ref StatusCode
+	 * @}
+	 */
+	DVP_eAuthenticate,
+
+	/*!
+	 * @addtogroup Commands Command/Response ID list
+	 * @ingroup PacketID
+	 * @{
+	 * @par 0xA2 - Update Public Key
+	 * @copybrief DVP_UpdatePublicKey
+	 * * Command payload
+	 *   @copydoc DVP_AuthenticationData
+	 * * Response payload
+	 *   > None
+	 *
+	 * * Status code See @ref StatusCode
+	 * @}
+	 */
+	DVP_eUpdatePublicKey,
 
 	/*--------------------------Events-----------------------------------*/
 	/*!
@@ -309,7 +354,7 @@ typedef enum __SHORT_ENUM__
 	 * @ingroup PacketID
 	 * @{
 	 * @par 0xE0 - Keep Alive
-	 * @copybrief DVP_KeepAlive
+	 * @copybrief DVP_AuthenticationData
 	 * * Payload
 	 *  > None
 	 *
