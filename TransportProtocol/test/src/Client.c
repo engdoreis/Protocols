@@ -61,8 +61,8 @@ int main (int argc, char** argv)
 
 	if (ret)
 	{
-		printf("\nOpening: %s\n", argv[1]);
-		FILE *fp = fopen(argv[1], "r");
+		printf("\nOpening: %s\n", argv[2]);
+		FILE *fp = fopen(argv[2], "r");
 		if(fp)
 		{
 			size = fread(testData, 1, sizeof(buffer), fp);
@@ -81,8 +81,8 @@ int main (int argc, char** argv)
 				}
 			}
 
-			printf("\nOpening: %s\n", argv[2]);
-			FILE *fp = fopen(argv[2], "w");
+			printf("\nOpening: %s\n", argv[3]);
+			FILE *fp = fopen(argv[3], "w");
 			if(fp)
 			{
 				size = fwrite(test.payload, 1, test.size, fp);
