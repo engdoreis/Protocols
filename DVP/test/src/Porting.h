@@ -12,6 +12,10 @@
 extern "C" {
 #endif
 
+#include "stdint.h"
+
+#define __USE_MISC
+
 void * UART_Open(const void *port);
 uint16_t UART_Write(void *handle, const void *buffer, uint16_t size);
 uint16_t UART_Read(void *handle, void *buffer, uint16_t size);

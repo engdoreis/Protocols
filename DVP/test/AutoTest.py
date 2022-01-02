@@ -38,7 +38,7 @@ class AutoTest:
                 return True
             print ("Failed!!\nComparisson between {} and {} Unmatched".format(test.output, test.expected))
             
-        print("Failed to run: {} {} {} {}".format(self.binName, test.cmd , test.input, test.output))
+        print(f"Failed to run: {self.binName} {test.cmd} {test.input} {test.output}")
         return False
 
 class UnitTest:

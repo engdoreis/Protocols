@@ -42,6 +42,7 @@ void TP_Callback(void *param, uint8_t address, uint16_t size, uint8_t *payload)
 
 bool DVP_Init(DVP_Obj *obj, const void *port, DVP_Driver *driver, uint8_t * buffer, uint32_t size)
 {
+	bool ret = false;
 	TP_ASSERT(obj == NULL || port == NULL || buffer == NULL);
 
 	uint32_t offset = 0;
@@ -61,7 +62,7 @@ bool DVP_Init(DVP_Obj *obj, const void *port, DVP_Driver *driver, uint8_t * buff
 
 	memset(&ctx->handlerTable, 0, sizeof(ctx->handlerTable));
 
-	bool ret = TP_Init(ctx->tp, (TP_Driver *)driver, TP_Callback, ctx, port, 2000, buffer + offset, size - offset);
+	ret = TP_Init(ctx->tp, (TP_Driver *)driver, TP_Callback, ctx, port, 2000, buffer + offset, size - offset);
 	if(ret)
 	{
 		ctx->address = 0;

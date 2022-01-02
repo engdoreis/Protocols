@@ -80,7 +80,7 @@ $(EXTRACTED_OBJ_DIR)%.a: $(LIB_DIR)%.a
 
 
 test: static servertest clienttest
-	py test/AutoTest.py $(BUILD_DIR)/servertest.exe $(BUILD_DIR)/clienttest.exe
+	python3 test/AutoTest.py $(BUILD_DIR)/servertest.exe $(BUILD_DIR)/clienttest.exe
 
 servertest: test/src/Server.c test/src/Porting.c test/src/circular_buffer.c
 	@echo "Generating $@..."

@@ -37,7 +37,7 @@ inline static void CriticalCopy(circularBuffer_t* ctx, volatile void *dest, vola
 	if(ctx->irqEnableSet)
 		ctx->irqEnableSet(false);
 
-	*((unsigned int *)dest) = *((unsigned int *)src);
+	*((uintptr_t *)dest) = *((uintptr_t *)src);
 
 	if(ctx->irqEnableSet)
 		ctx->irqEnableSet(true);

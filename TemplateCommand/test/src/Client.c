@@ -143,7 +143,7 @@ void VA_ArgsScanfConverter(char * format, void * stack, uint32_t * output, uint3
 
 	while(tok && index < size)
 	{
-		output[index++] = (uint32_t )stack;
+		output[index++] = (uintptr_t )stack;
 
 		stack += VA_ArgsGetSize(tok);
 
@@ -216,11 +216,11 @@ int main (int argc, char** argv)
 		if(fp)
 		{
 			VA_ArgsScanfConverter(tc->inputFormat, testBuffer, array.param, sizeof(array.param) / sizeof(array.param[0]));
-			fscanf(fp, tc->inputFormat, array);
+			int n = fscanf(fp, tc->inputFormat, array);
 
 			fclose(fp);
 
-			if(size < tc->dataSize)
+			if(n < 1 && size < tc->dataSize)
 			{
 				printf("Wrong data size\n ");
 			}

@@ -15,4 +15,4 @@
 # 06-Feb-2019  Douglas Reis     - Initial Version. 
 # ********************************************************************************************
 
-TOOLCHAIN_HOME            ?= D:/SW/Toolchain/cygwin/
+TOOLCHAIN_HOME            ?= /

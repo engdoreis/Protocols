@@ -53,7 +53,7 @@ typedef struct
 static const uint8_t TP_STX[] = {0x5A, 0x55};
 
 #define TP_STX_SIZE	          	sizeof(TP_STX)
-#define TP_STARTING_FRAME_SIZE	(uint32_t)(&(((Frame *)0)->data))
+#define TP_STARTING_FRAME_SIZE	(uintptr_t)(&(((Frame *)0)->data))
 #define TP_CRC_SIZE		  		sizeof(((Frame*)0)->crc)
 
 #endif /* Frame_H_ */

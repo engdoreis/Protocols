@@ -8,7 +8,7 @@
 #include <TransportProtocol.h>
 #include "Porting.h"
 
-#define TIMEOUT 2000
+#define TIMEOUT 5000
 
 typedef struct
 {
@@ -51,7 +51,7 @@ int main (int argc, char** argv)
 	//Disable stdout buffer to flush imediatelly
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-	bool ret = TP_Init(&test.obj, &driver, Callback, &test, "server:1003", 1000, buffer, sizeof(buffer));
+	bool ret = TP_Init(&test.obj, &driver, Callback, &test, "server:8888", 1000, buffer, sizeof(buffer));
 	test.timeout = SYS_Tick() + TIMEOUT;
 
 	while(ret)
@@ -69,7 +69,6 @@ int main (int argc, char** argv)
 		printf("\nReplying %s\n", test.payload);
 		TP_Send(&test.obj, 0, test.payload, test.size);
 		test.timeout = SYS_Tick() + TIMEOUT;
-
 	}
 
 	return 0;

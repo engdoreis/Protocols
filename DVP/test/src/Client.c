@@ -37,7 +37,7 @@ TestCase TestMap[] =
 	{"DVP_ReadVehicleConfig"     ,(Function)DVP_ReadVehicleConfig       ,false ,true ,sizeof(DVP_VehicleConfig)             ,"Ret=%u\r\n cruiseEnabled=%hhx\r\n throttleLevel=%hhx\r\n brakeLevel=%hhx\r\n startSpeed=%hu\r\n speedLimit=%hu\r\n", " "},
 	{"DVP_WriteVehicleConfig"    ,(Function)DVP_WriteVehicleConfig      ,false ,true ,sizeof(DVP_VehicleConfig)             ,"Ret=%u", "cruiseEnabled=%hhx\r\n throttleLevel=%hhx\r\n brakeLevel=%hhx\r\n startSpeed=%hu\r\n speedLimit=%hu\r\n"},
 	{"DVP_ReadVehicleInfo"       ,(Function)DVP_ReadVehicleInfo         ,false ,true ,sizeof(DVP_Info)                      ,"Ret=%u\r\n serialnumber=%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X\r\n firmwareVersion=%hhX.%hhX.%hhX.%hhX\r\n", " "},
-	{"DVP_ReadBatteryStatus"     ,(Function)DVP_ReadBatteryStatus       ,false ,true ,sizeof(DVP_BatteryStatus)             ,"Ret=%u\r\n isCharging=%hhx\r\n charge=%hhu%%\r\n temperature=%hhu°c\r\n voltage=%huV\r\n", " "},
+	{"DVP_ReadBatteryStatus"     ,(Function)DVP_ReadBatteryStatus       ,false ,true ,sizeof(DVP_BatteryStatus)             ,"Ret=%u\r\n isCharging=%hhx\r\n charge=%hhu%%\r\n temperature=%hhuï¿½c\r\n voltage=%huV\r\n", " "},
 	{"DVP_ReadBatteryInfo"       ,(Function)DVP_ReadBatteryInfo         ,false ,true ,sizeof(DVP_Info)                      ,"Ret=%u\r\n serialnumber=%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X%hh02X\r\n firmwareVersion=%hhX.%hhX.%hhX.%hhX\r\n", " "},
 	{"DVP_FirmwareUpdateStart"   ,(Function)DVP_FirmwareUpdateStart     ,false ,true ,sizeof(DVP_FirmwareUpdateStartPacket) ,"Ret=%u", "firmwareSize=%u\r\n"},
 	{"DVP_FirmwareUpdateLoad"    ,(Function)DVP_FirmwareUpdateLoad      ,false ,true ,sizeof(DVP_FirmwareUpdateLoadPacket)  ,"Ret=%u", "sequence=%hu\r\n size=%hu\r\n content=%s\r\n"},
@@ -152,7 +152,7 @@ void VA_ArgsScanfConverter(char * format, void * stack, uint32_t * output, uint3
 
 	while(tok && index < size)
 	{
-		output[index++] = (uint32_t )stack;
+		output[index++] = (uintptr_t )stack;
 
 		stack += VA_ArgsGetSize(tok);
 
@@ -225,11 +225,11 @@ int main (int argc, char** argv)
 		if(fp)
 		{
 			VA_ArgsScanfConverter(tc->inputFormat, testBuffer, array.param, sizeof(array.param) / sizeof(array.param[0]));
-			fscanf(fp, tc->inputFormat, array);
+			uint32_t res = fscanf(fp, tc->inputFormat, array);
 
 			fclose(fp);
 
-			if(size < tc->dataSize)
+			if(res < 1 && size < tc->dataSize)
 			{
 				printf("Wrong data size\r\n ");
 			}

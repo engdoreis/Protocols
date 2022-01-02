@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : LDP_NinebotServer.c
+ Name        : LDP_ProtocolServer.c
  Author      : Douglas Reis
  Version     :
  Copyright   : Your copyright notice
@@ -42,6 +42,7 @@ void TP_Callback(void *param, uint8_t address, uint16_t size, uint8_t *payload)
 
 bool LDP_Init(LDP_Obj *obj, const void *port, LDP_Driver *driver, uint8_t * buffer, uint32_t size)
 {
+	bool ret = false;
 	TP_ASSERT(obj == NULL || port == NULL || buffer == NULL);
 
 	uint32_t offset = 0;
@@ -61,7 +62,7 @@ bool LDP_Init(LDP_Obj *obj, const void *port, LDP_Driver *driver, uint8_t * buff
 
 	memset(&ctx->handlerTable, 0, sizeof(ctx->handlerTable));
 
-	bool ret = TP_Init(ctx->tp, (TP_Driver *)driver, TP_Callback, ctx, port, 2000, buffer + offset, size - offset);
+	ret = TP_Init(ctx->tp, (TP_Driver *)driver, TP_Callback, ctx, port, 2000, buffer + offset, size - offset);
 	if(ret)
 	{
 		ctx->address = 0;
@@ -136,6 +137,7 @@ static LDP_StatusCode LDP_SendGeneric(LDP_Obj *obj, bool sync, uint32_t type, ui
 			goto exit;
 		}
 
+		result = LDP_OK;
 		if(sync)
 		{
 			uint32_t tries = 5;
@@ -165,27 +167,27 @@ static LDP_StatusCode LDP_SendGeneric(LDP_Obj *obj, bool sync, uint32_t type, ui
 	return result;
 }
 
-LDP_StatusCode LDP_Command1(LDP_Obj *obj, st_cmd1* data, st_cmd1* out)
+LDP_StatusCode LDP_Command1(LDP_Obj *obj, st_cmd1* data)
 {
-	uint32_t size = (out==NULL)?0:sizeof(st_cmd1);
-	return LDP_SendGeneric(obj, true, LDP_FrameCommand, LDP_Cmd1, LDP_OK, data, (data==NULL)?0:sizeof(st_cmd1), out, &size);
+	uint32_t size = (data == NULL) ? 0 : sizeof(st_cmd1);
+	return LDP_SendGeneric(obj, true, LDP_FrameCommand, LDP_Cmd1, LDP_OK, data, size, NULL, 0);
 }
 
 LDP_StatusCode LDP_Command1Async(LDP_Obj *obj, st_cmd1* data)
 {
-	return LDP_SendGeneric(obj, false, LDP_FrameCommand, LDP_Cmd1, LDP_OK, data, (data==NULL)?0:sizeof(st_cmd1), NULL, 0);
+	uint32_t size = (data == NULL) ? 0 : sizeof(st_cmd1);
+		return LDP_SendGeneric(obj, false, LDP_FrameCommand, LDP_Cmd1, LDP_OK, data, size, NULL, 0);
 }
 
-
-LDP_StatusCode LDP_Command2(LDP_Obj *obj, st_cmd2 *cmd)
+LDP_StatusCode LDP_Command2(LDP_Obj *obj, st_cmd2 *data)
 {
-	uint32_t size = sizeof(st_cmd2);
-	return LDP_SendGeneric(obj, true, LDP_FrameCommand, LDP_Cmd2, LDP_OK, NULL, 0, cmd, &size);
+	uint32_t size = (data == NULL) ? 0 : sizeof(st_cmd2);
+	return LDP_SendGeneric(obj, true, LDP_FrameCommand, LDP_Cmd2, LDP_OK, NULL, 0, data, &size);
 }
 
-LDP_StatusCode LDP_Response1(LDP_Obj *obj, LDP_StatusCode statusCode, st_cmd1* data)
+LDP_StatusCode LDP_Response1(LDP_Obj *obj, LDP_StatusCode statusCode)
 {
-	return LDP_SendGeneric(obj, false, LDP_FrameResponse, LDP_Cmd1, statusCode, data, (data==NULL)?0:sizeof(st_cmd1), NULL, 0);
+	return LDP_SendGeneric(obj, false, LDP_FrameResponse, LDP_Cmd1, statusCode, NULL, 0, NULL, 0);
 }
 
 LDP_StatusCode LDP_Response2(LDP_Obj *obj, LDP_StatusCode statusCode, st_cmd2* data)

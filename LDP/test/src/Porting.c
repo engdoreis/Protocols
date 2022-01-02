@@ -6,6 +6,9 @@
  */
 
 
+//https://stackoverflow.com/questions/42597685/storage-size-of-timespec-isnt-known
+#define _POSIX_C_SOURCE 199309L
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,17 +59,19 @@ void * UART_Open(const void *port)
 
 	sscanf((char*)port, "%[^:]:%u", url, &portnum);
 
-	op.socketfd = socket(AF_INET, SOCK_DGRAM, 0);
-	memset(&op.serv_addr, '0', sizeof(op.serv_addr));
+	op.socketfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+	memset(&op.serv_addr, 0, sizeof(op.serv_addr));
 
 	op.serv_addr.sin_family = AF_INET;
 	op.serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	op.serv_addr.sin_port = htons(portnum);
 
 	if(strcmp(url, "server") == 0)
-	{
-		if(bind(op.socketfd, (struct sockaddr*)&op.serv_addr, sizeof(op.serv_addr)) < 0)
+	{	
+		int res = bind(op.socketfd, (struct sockaddr*)&op.serv_addr, sizeof(op.serv_addr));
+		if(res < 0)
 		{
+			printf("Bind error %d\n", res);
 			return 0;
 		}
 
@@ -114,12 +119,12 @@ uint16_t UART_Read(void *handle, void *buffer, uint16_t size)
 	ioctl(op.connfd, FIONREAD, &count);
 	if(count > 0)
 	{
-		count = recvfrom(op.connfd, _buffer, count, 0, (struct sockaddr *)&op.cli_addr, &op.len);
+		count = recvfrom(op.connfd, _buffer, count, 0, (struct sockaddr *)&op.cli_addr, (socklen_t *)&op.len);
 		if (count < 0 )
 		{
 			char errnoMessage[50] = {0};
 			snprintf(errnoMessage, sizeof(errnoMessage), "%s", strerror(errno));
-			printf(errnoMessage);
+			printf("%s", errnoMessage);
 		}
 		else
 		{

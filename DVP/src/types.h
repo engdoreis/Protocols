@@ -51,7 +51,7 @@ typedef struct
 	f->id = i;\
 	f->statusCode = s;
 
-#define DVP_FRAME_HEADER_SIZE (uint32_t)(&(((DVP_Frame *)0)->payload))
+#define DVP_FRAME_HEADER_SIZE (uintptr_t)(&(((DVP_Frame *)0)->payload))
 #define DVP_MAX_PAYLOAD_LEN (uint32_t)300
 
 #ifdef __LITTLE_ENDIAN__

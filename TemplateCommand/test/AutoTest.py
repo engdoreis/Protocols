@@ -51,7 +51,7 @@ class AutoTest:
                         print ("Failed!!\nComparisson between {} and {} Unmatched".format(test.output, test.expected))
                         subprocess.call (['WinMergeU.exe', os.path.abspath(test.output), os.path.abspath(test.expected)], stdout=subprocess.DEVNULL)
             if result != True:
-                print("Failed to run: ", args)                
+                print(f"Failed to run: {self.binName} {test.cmd} {test.input} {test.output}")
                 return False
                 
         print ("{}".format("Aproved! |"))
