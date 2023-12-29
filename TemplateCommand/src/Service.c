@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : T_NinebotServer.c
+ Name        : T_ProtocolServer.c
  Author      : Douglas Reis
  Version     :
  Copyright   : Your copyright notice
@@ -42,6 +42,7 @@ void TP_Callback(void *param, uint8_t address, uint16_t size, uint8_t *payload)
 
 bool T_Init(T_Obj *obj, const void *port, T_Driver *driver, uint8_t * buffer, uint32_t size)
 {
+	bool ret = false;
 	TP_ASSERT(obj == NULL || port == NULL || buffer == NULL);
 
 	uint32_t offset = 0;
@@ -61,7 +62,7 @@ bool T_Init(T_Obj *obj, const void *port, T_Driver *driver, uint8_t * buffer, ui
 
 	memset(&ctx->handlerTable, 0, sizeof(ctx->handlerTable));
 
-	bool ret = TP_Init(ctx->tp, (TP_Driver *)driver, TP_Callback, ctx, port, 2000, buffer + offset, size - offset);
+	ret = TP_Init(ctx->tp, (TP_Driver *)driver, TP_Callback, ctx, port, 2000, buffer + offset, size - offset);
 	if(ret)
 	{
 		ctx->address = 0;
@@ -136,6 +137,7 @@ static Template_StatusCode T_SendGeneric(T_Obj *obj, bool sync, uint32_t type, u
 			goto exit;
 		}
 
+		result = T_OK;
 		if(sync)
 		{
 			uint32_t tries = 5;
@@ -165,27 +167,27 @@ static Template_StatusCode T_SendGeneric(T_Obj *obj, bool sync, uint32_t type, u
 	return result;
 }
 
-Template_StatusCode T_Command1(T_Obj *obj, st_cmd1* data, st_cmd1* out)
+Template_StatusCode T_Command1(T_Obj *obj, st_cmd1* data)
 {
-	uint32_t size = (out==NULL)?0:sizeof(st_cmd1);
-	return T_SendGeneric(obj, true, T_FrameCommand, T_Cmd1, T_OK, data, (data==NULL)?0:sizeof(st_cmd1), out, &size);
+	uint32_t size = (data == NULL) ? 0 : sizeof(st_cmd1);
+	return T_SendGeneric(obj, true, T_FrameCommand, T_Cmd1, T_OK, data, size, NULL, 0);
 }
 
 Template_StatusCode T_Command1Async(T_Obj *obj, st_cmd1* data)
 {
-	return T_SendGeneric(obj, false, T_FrameCommand, T_Cmd1, T_OK, data, (data==NULL)?0:sizeof(st_cmd1), NULL, 0);
+	uint32_t size = (data == NULL) ? 0 : sizeof(st_cmd1);
+		return T_SendGeneric(obj, false, T_FrameCommand, T_Cmd1, T_OK, data, size, NULL, 0);
 }
 
-
-Template_StatusCode T_Command2(T_Obj *obj, st_cmd2 *cmd)
+Template_StatusCode T_Command2(T_Obj *obj, st_cmd2 *data)
 {
-	uint32_t size = sizeof(st_cmd2);
-	return T_SendGeneric(obj, true, T_FrameCommand, T_Cmd2, T_OK, NULL, 0, cmd, &size);
+	uint32_t size = (data == NULL) ? 0 : sizeof(st_cmd2);
+	return T_SendGeneric(obj, true, T_FrameCommand, T_Cmd2, T_OK, NULL, 0, data, &size);
 }
 
-Template_StatusCode T_Response1(T_Obj *obj, Template_StatusCode statusCode, st_cmd1* data)
+Template_StatusCode T_Response1(T_Obj *obj, Template_StatusCode statusCode)
 {
-	return T_SendGeneric(obj, false, T_FrameResponse, T_Cmd1, statusCode, data, (data==NULL)?0:sizeof(st_cmd1), NULL, 0);
+	return T_SendGeneric(obj, false, T_FrameResponse, T_Cmd1, statusCode, NULL, 0, NULL, 0);
 }
 
 Template_StatusCode T_Response2(T_Obj *obj, Template_StatusCode statusCode, st_cmd2* data)

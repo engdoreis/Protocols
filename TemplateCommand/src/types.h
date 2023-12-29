@@ -1,5 +1,5 @@
 /*
- * Ninebot_types.h
+ * Protocol_types.h
  *
  *  Created on: Sep 25, 2019
  *      Eng. Douglas Reis
@@ -51,7 +51,7 @@ typedef struct
 	f->id = i;\
 	f->statusCode = s;
 
-#define T_FRAME_HEADER_SIZE (uint32_t)(&(((T_Frame *)0)->payload))
+#define T_FRAME_HEADER_SIZE (uintptr_t)(&(((T_Frame *)0)->payload))
 #define T_MAX_PAYLOAD_LEN (uint32_t)128
 
 #ifdef __LITTLE_ENDIAN__

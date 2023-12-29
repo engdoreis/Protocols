@@ -1,19 +1,32 @@
 @mainpage Protocol Stack
+@tableofcontents
 
 # Sumary
-The protocol is difived in two layers described below.
- - @subpage transportProtocol "Transport layer"
- - @subpage CommandProtocol "Enlace layer"
- 
+This is a simple and dynamic protocol specificaton.
+There are two ways of implementing this protocol.
+ - Use the API.
+ - Write the code to deal with the packets.
+
+
+# Revision history
+|Date             |Author             |Details                                                                             |
+|:--              |:--                |:--                                                                                 |
+|2020-Jul-18      |Douglas Reis       |First release                                                                       |
+|2020-Jul-23      |Douglas Reis       |Add authentication commands.                                                        |
 
 # Using the API
- The fasted solution to use the protocol is using the provided library which implentes all the layers a can be accessed by a simplified API.
+ The fastest and easiest solution it's to use the API. It implents all the rules and assure the packet integrity.
+ ## API example
+ @copydoc API
+ ## Full API documentation
  - @subpage API "Library API"
 
 # Implementing the protocol
-    In case you want to implement the protocol by youself this section will describe how it works.
-    The lowest layer is called Transport Layer and is responsable for send and receive packets with integrity.
-    Over the Tranporte Layer, there's the Enlace Layer whitch is responsable for elaborate the functions for each packet.
+    In case you are crazy or have strong reasons to implement the protocol by yourself, this section provides details.
+    There are two layers composing the stack, Transport Layer and Enlace Layer.
+    Transport Layer is lowest layer and is responsable for sending and receiving the packets with integrity assured.
+    Enlace Layer is over Tranporte Layer whitch is responsable for elaborate the purpose and sequence of each packet sent and received.
+
 ## Transport Layer
    @copydoc transportFrame
    @image html Protocols-TransportProtocol.jpg "Transport Flow"
@@ -21,8 +34,8 @@ The protocol is difived in two layers described below.
 ## Enlace Layer
    @copydoc PacketFrame
    @copydoc PacketType
-   @copydoc StatusCode
    @image html Protocols-EnlaceProtocol.jpg "Enlace Flow"
+   @copydoc StatusCode
 
 ## Command/Response list   
    @copydoc Commands

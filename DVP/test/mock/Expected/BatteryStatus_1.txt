@@ -1,0 +1,5 @@
+Ret=0
+ isCharging=0
+ charge=79%
+ temperature=62°c
+ voltage=3988V

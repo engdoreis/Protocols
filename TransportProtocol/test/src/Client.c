@@ -8,7 +8,7 @@
 #include <TransportProtocol.h>
 #include "Porting.h"
 
-#define TIMEOUT 2000
+#define TIMEOUT 5000
 
 typedef struct
 {
@@ -46,7 +46,7 @@ int main (int argc, char** argv)
 
 	uint8_t buffer[1024];
 	uint8_t testData[512];
-	uint32_t size = 0;
+	size_t size = 0;
 	ClassTest test =
 	{
 			.running = true,
@@ -56,16 +56,16 @@ int main (int argc, char** argv)
 	//Disable stdout buffer to flush imediatelly
 	setvbuf(stdout, NULL, _IONBF, 0);
 
-	bool ret = TP_Init(&test.obj, &driver, Callback, &test, "client:1003", 1000, buffer, sizeof(buffer));
+	bool ret = TP_Init(&test.obj, &driver, Callback, &test, "client:8888", 1000, buffer, sizeof(buffer));
 	test.timeout = SYS_Tick() + TIMEOUT;
 
 	if (ret)
 	{
-		printf("\nOpening: %s\n", argv[1]);
-		FILE *fp = fopen(argv[1], "r");
+		printf("\nOpening: %s\n", argv[2]);
+		FILE *fp = fopen(argv[2], "r");
 		if(fp)
 		{
-			size = fread(testData, 1, sizeof(buffer), fp);
+			size = fread(testData, 1, sizeof(testData), fp);
 			fclose(fp);
 
 			printf("\nSending\n");
@@ -77,12 +77,13 @@ int main (int argc, char** argv)
 				TP_Process(&test.obj);
 				if(	test.timeout < SYS_Tick())
 				{
+					printf("\nTimeout: %d\n", test.timeout);		
 					return 1;
 				}
 			}
 
-			printf("\nOpening: %s\n", argv[2]);
-			FILE *fp = fopen(argv[2], "w");
+			printf("\nOpening: %s\n", argv[3]);
+			FILE *fp = fopen(argv[3], "w");
 			if(fp)
 			{
 				size = fwrite(test.payload, 1, test.size, fp);

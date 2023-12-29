@@ -1,0 +1,1 @@
+firmwareSize=39568

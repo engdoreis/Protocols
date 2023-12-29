@@ -10,54 +10,92 @@ import os
 import sys
 
 class AutoTest:
-    def __init__(self, binName):
+    def __init__(self, binName, inDir, outDir, expectDir):
         self.binName = binName
+        self.inDir = inDir
+        self.outDir = outDir
+        self.expectDir = expectDir
 
-    def Execute(self, test):
-        print("Starting test ", test.name)                
+        subprocess.call(["rm",outDir + "*.*"], stdout=subprocess.DEVNULL)
         
-        #subprocess.call (["rm", test.output], stdout=subprocess.DEVNULL)        
-        subprocess.call ([self.binName, test.input , test.output], stdout=subprocess.DEVNULL)
+        self.index=0
 
-        if os.path.exists(test.output):
-            if filecmp.cmp(test.expected, test.output, shallow=False):
-                print ("Passed!!")
+    def Execute(self, testFeature):
+        self.index += 1
+        print("| Test case {}: {: <60}".format(self.index, testFeature.name), end= "")        
+
+        args = []
+        args.append(self.binName)
+        
+        for test in testFeature.scenario:
+            test.input = self.inDir + test.input
+            test.output = self.outDir + test.output
+            test.expected = self.expectDir + test.expected
+            args.append(test.cmd) 
+            args.append(test.input)
+            args.append(test.output)
+            
+        subprocess.call (args, stdout=subprocess.DEVNULL)
+        
+        result=True
+        for test in testFeature.scenario:
+            result=False
+            if not os.path.exists(test.expected):
+                print(" Failed! |\n", test.expected , " Not found")
+            elif not os.path.exists(test.output):
+                print(" Failed! |\n", test.output , " Not found")
             else:
-                print ("Comparisson between {} and {} failed".format(test.output, test.expected))
-        else:
-            print("Failed to run ", self.binName, test.input + ' ' + test.output)
+                if filecmp.cmp(test.expected, test.output, shallow=False):
+                        result=True
+                else:
+                        print ("Failed!!\nComparisson between {} and {} Unmatched".format(test.output, test.expected))
+                        subprocess.call (['WinMergeU.exe', os.path.abspath(test.output), os.path.abspath(test.expected)], stdout=subprocess.DEVNULL)
+            if result != True:
+                print(f"Failed to run: {self.binName} {test.cmd} {test.input} {test.output}")
+                return False
+                
+        print ("{}".format("Aproved! |"))
+        print ("+{:->84}".format('+'))
 
-
-        print ("------------------------------------------\n")
-
-
-class UnitTest:
-    def __init__(self, name, input, output, expected):
-        self.name = name
+class TestScenario:
+    def __init__(self, cmd, input, expected, output="evidence"):
+        self.cmd = cmd
         self.input = input
-        self.output = output
+        self.output = output + "_" + expected
         self.expected = expected
- 
 
-print (sys.argv[1], sys.argv[2])
-print ("\n------------------------------------------")
-print ("             Starting Server..              ")
-print ("--------------------------------------------\n")
+class TestFeature:
+    def __init__(self, name, scenario):
+        self.name = name
+        self.scenario = scenario
+
+print ("+{:->84}".format('+'))
+print ("|{: ^83}|".format("STARTING AUTO TEST"))
+print ("+{:->84}".format('+'))
+
+#os._exit(0)
+
+
+print ("Starting Server ...              ")
 subprocess.Popen([str(sys.argv[1])], stdout=subprocess.DEVNULL)
 
-print ("------------------------------------------")
-print ("             AUTO TEST STARTING              ")
-print ("--------------------------------------------\n")
-at = AutoTest(str(sys.argv[2]))
+at = AutoTest(str(sys.argv[2]), inDir="test/mock/", outDir="~build/x86/", expectDir="test/mock/")
 
 testList = []
 
-testList.append(UnitTest("Test case 1 ", "test/mock/Test1.txt", "~build/x86/debug/Test1.txt", "test/mock/Test1.txt"))
-testList.append(UnitTest("Test case 2 ", "test/mock/Test2.txt", "~build/x86/debug/Test2.txt", "test/mock/Test2.txt"))
-testList.append(UnitTest("Test case 3 ", "test/mock/Test3.txt", "~build/x86/debug/Test3.txt", "test/mock/Test3.txt"))
-testList.append(UnitTest("Test case 4 ", "test/mock/Test4.txt", "~build/x86/debug/Test4.txt", "test/mock/Test4.txt"))
+testList.append(TestFeature(name="Test case "       ,scenario=[TestScenario(cmd ="send"    , input="Test1.txt",  expected="Test1.txt") ] ))
+testList.append(TestFeature(name="Test case "       ,scenario=[TestScenario(cmd ="send"    , input="test2.txt",  expected="test2.txt") ] ))
+testList.append(TestFeature(name="Test case "       ,scenario=[TestScenario(cmd ="send"    , input="test3.txt",  expected="test3.txt") ] ))
+testList.append(TestFeature(name="Test case "       ,scenario=[TestScenario(cmd ="send"    , input="test4.txt",  expected="test4.txt") ] ))
 
+approved = True
 for test in testList:
-    at.Execute(test)
-        
-    
+    sys.stdout.flush()
+    if at.Execute(test) == False:
+        approved = False
+        break
+
+sys.stdout.flush()
+
+if(not approved):
+    os._exit(1)
