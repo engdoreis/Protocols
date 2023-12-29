@@ -16,7 +16,7 @@ class AutoTest:
         self.outDir = outDir
         self.expectDir = expectDir
         
-        subprocess.call(["rm",outDir + "*.*"], stdout=subprocess.DEVNULL)
+        subprocess.call(["rm", "-rf", outDir + "*"], stdout=subprocess.DEVNULL)
         
         self.index=0
 

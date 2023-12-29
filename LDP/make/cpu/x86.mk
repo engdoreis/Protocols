@@ -15,7 +15,7 @@
 # 06-Feb-2019  Douglas Reis     - Initial Version. 
 # ********************************************************************************************
 
-CROSS_TOOLCHAIN        := $(subst \,/,$(TOOLCHAIN_HOME))bin/
+CROSS_TOOLCHAIN        := $(subst \,/,$(TOOLCHAIN_HOME))
 
 CC                     := $(CROSS_TOOLCHAIN)gcc
 AR                     := $(CROSS_TOOLCHAIN)ar
